@@ -32,7 +32,8 @@ namespace LegacyElasticSearchDemo
             // Uncomment these methods to perform operations
             //InsertData();
             //PerformTermQuery();
-            PerformMatchPhrase();
+            //PerformMatchPhrase();
+            PerformFilter();
         }
 
         public static void InsertData()
@@ -74,6 +75,16 @@ namespace LegacyElasticSearchDemo
         {
             var result = client.Search<Post>(s => s
                 .Query(q => q.MatchPhrase(m => m.Field("postText").Query("this is a third blog post"))));
+        }
+
+        public static void PerformFilter()
+        {
+            var result = client.Search<Post>(s => s
+                .Query(q => q.Term(p => p.PostText, "blog"))
+                .Query(q => q.DateRange(c => c
+                    .Field(p => p.PostDate)
+                    .GreaterThan("2017-03-11")
+                    .Format("yyyy-MM-dd||yyyy"))));
         }
     }
 }
