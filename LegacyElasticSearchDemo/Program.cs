@@ -30,7 +30,8 @@ namespace LegacyElasticSearchDemo
             );*/
 
             // Uncomment these methods to perform operations
-            InsertData();
+            //InsertData();
+            PerformTermQuery();
         }
 
         public static void InsertData()
@@ -59,6 +60,13 @@ namespace LegacyElasticSearchDemo
             client.Index(newBlogPost);
             client.Index(newBlogPost2);
             client.Index(newBlogPost3);
+        }
+
+        public static void PerformTermQuery()
+        {
+            var result =
+            client.Search<Post>(s => s
+                .Query(p => p.Term(q => q.PostText, "blog")));
         }
     }
 }
