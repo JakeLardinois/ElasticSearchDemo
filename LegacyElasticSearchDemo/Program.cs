@@ -31,7 +31,8 @@ namespace LegacyElasticSearchDemo
 
             // Uncomment these methods to perform operations
             //InsertData();
-            PerformTermQuery();
+            //PerformTermQuery();
+            PerformMatchPhrase();
         }
 
         public static void InsertData()
@@ -67,6 +68,12 @@ namespace LegacyElasticSearchDemo
             var result =
             client.Search<Post>(s => s
                 .Query(p => p.Term(q => q.PostText, "blog")));
+        }
+
+        public static void PerformMatchPhrase()
+        {
+            var result = client.Search<Post>(s => s
+                .Query(q => q.MatchPhrase(m => m.Field("postText").Query("this is a third blog post"))));
         }
     }
 }
